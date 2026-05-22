@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    container_name: rails_web
+    working_dir: /app
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 8080 -b '0.0.0.0'"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    mem_limit: 768m 
+    cpus: 1.0
+    environment:
+      DATABASE_URL: mysql2://root:root@db:3306/rails_db
+
+  db:
+    image: mysql:8.0
+    container_name: rails_db
+    command: >
+      --innodb-buffer-pool-size=256M
+      --max-connections=40
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rails_db
+    ports:
+      - "3308:3306"
+    volumes:
+      - rails_dbdata:/var/lib/mysql
+    mem_limit: 1g
+    cpus: 0.75
+
+volumes:
+  rails_dbdata:
