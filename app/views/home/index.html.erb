@@ -1,0 +1,165 @@
+<div class="hero">
+  <div class="hero-content">
+    <span class="badge">🎓 Belajar Ruby on Rails</span>
+    <h1>Selamat Datang di <span class="highlight">RubyLearn</span></h1>
+    <p class="subtitle">
+      Platform belajar Ruby on Rails yang simpel, cepat, dan menyenangkan.
+      Mulai perjalananmu jadi Rails developer hari ini.
+    </p>
+
+    <div class="cta-buttons">
+      <% if session[:user_id] %>
+        <%= link_to "Ke Dashboard →", dashboard_path, class: "btn btn-primary" %>
+      <% else %>
+        <%= link_to "Masuk / Login", login_path, class: "btn btn-primary" %>
+        <%= link_to "Pelajari Lebih Lanjut", "#features", class: "btn btn-secondary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="features" id="features">
+  <div class="feature-card">
+    <div class="feature-icon">🚀</div>
+    <h3>Cepat</h3>
+    <p>Materi dikemas ringkas biar kamu langsung praktik, bukan cuma teori.</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">🧩</div>
+    <h3>Terstruktur</h3>
+    <p>Belajar step-by-step dari dasar sampai bisa bikin project sendiri.</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">🤝</div>
+    <h3>Gratis</h3>
+    <p>Semua materi bisa diakses tanpa biaya, cukup login pakai akun Google.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>&copy; <%= Date.current.year %> RubyLearn. Dibuat dengan ❤️ untuk belajar Rails.</p>
+</footer>
+
+<style>
+  .hero {
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #fdf2f2 0%, #f5f7fa 100%);
+    padding: 2rem 1.5rem;
+  }
+
+  .hero-content {
+    max-width: 640px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: #fde8e8;
+    color: #cc0000;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2.75rem;
+    margin: 0 0 1rem;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+
+  .highlight {
+    color: #cc0000;
+  }
+
+  .subtitle {
+    font-size: 1.15rem;
+    color: #555;
+    margin-bottom: 2.25rem;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-primary {
+    background-color: #cc0000;
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(204, 0, 0, 0.25);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: #cc0000;
+    border: 2px solid #cc0000;
+  }
+
+  .btn-secondary:hover {
+    background-color: #fde8e8;
+  }
+
+  .features {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+
+  .feature-card {
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem;
+    color: #1a1a1a;
+  }
+
+  .feature-card p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .site-footer {
+    width: 100%;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #eee;
+    color: #999;
+    font-size: 0.85rem;
+  }
+</style>
