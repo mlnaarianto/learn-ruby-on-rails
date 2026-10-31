@@ -1,18 +1,191 @@
-<!-- app/views/auth/login.html.erb -->
+<%# --- SCRIPT ANTI-FLICKER DARK MODE --- %>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
 
-<div class="flex items-center justify-center min-h-screen bg-gray-100 font-sans">
-  <div class="bg-white p-8 sm:p-10 rounded-xl shadow-md w-full max-w-sm text-center">
-    <h1 class="text-2xl font-semibold text-gray-800 mb-2">Selamat Datang 👋</h1>
-    <p class="text-sm text-gray-500 mb-8">Masuk ke akun Anda untuk melanjutkan</p>
+<div class="flex min-h-screen w-full">
 
-    <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, form_class: "flex justify-center w-full", class: "flex items-center justify-center gap-3 w-full bg-white text-gray-700 border border-gray-300 rounded-lg py-3 px-4 text-base font-medium cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-50 hover:border-gray-400 hover:shadow-sm" do %>
-      <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      Lanjutkan dengan Google
-    <% end %>
-  </div>
+    <!-- ================= KIRI: Branding (Sembunyi di Mobile) ================= -->
+    <div class="hidden lg:flex lg:w-1/2 relative bg-emerald-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 items-center justify-center overflow-hidden transition-colors duration-300">
+        
+        <!-- Ornamen Background Lembut -->
+        <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-emerald-200/50 via-transparent to-transparent dark:from-emerald-900/20"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-teal-200/50 dark:bg-teal-900/20 rounded-full blur-3xl"></div>
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-emerald-300/40 dark:bg-emerald-800/20 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10 px-12 xl:px-20 py-16 flex flex-col justify-between w-full h-full">
+            <!-- Logo Atas -->
+            <a href="/" class="flex items-center gap-3 group w-max">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30 group-hover:scale-105 transition-transform duration-300">
+                    <i class="fas fa-house-chimney-user text-lg"></i>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-bold text-lg text-slate-900 dark:text-white tracking-tight">
+                        Warga<span class="text-emerald-600 dark:text-emerald-400">Kita</span>
+                    </span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-medium tracking-wider uppercase">
+                        Portal Komunitas
+                    </span>
+                </div>
+            </a>
+
+            <!-- Teks Tengah -->
+            <div class="my-auto py-12">
+                <h1 class="text-4xl xl:text-5xl font-extrabold tracking-tight mb-6 leading-[1.1] text-slate-900 dark:text-white">
+                    Terhubung dengan<br>
+                    Tetangga & <span class="text-emerald-600 dark:text-emerald-400">Lingkungan</span>
+                </h1>
+                <p class="text-slate-600 dark:text-slate-400 text-lg max-w-md leading-relaxed">
+                    Akses informasi perumahan, jadwal ronda, dan fasilitas warga dalam satu platform yang aman dan nyaman.
+                </p>
+            </div>
+
+            <!-- Footer Kiri -->
+            <div class="flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-medium">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Sistem Aktif
+                </span>
+                <span class="text-slate-300 dark:text-slate-600">·</span>
+                <span>Perumahan [Nama Perumahan]</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= KANAN: Form Login ================= -->
+    <div class="w-full lg:w-1/2 flex flex-col bg-white dark:bg-slate-950 relative transition-colors duration-300">
+
+        <!-- Top Actions (Tema & Kembali) -->
+        <div class="absolute top-6 right-6 sm:top-8 sm:right-8 flex items-center gap-4 z-20">
+            <button id="theme-toggle" type="button" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Ganti Tema">
+                <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
+            </button>
+            <a href="/" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <i class="fas fa-arrow-left text-[10px]"></i> Kembali ke Beranda
+            </a>
+        </div>
+
+        <!-- Wrapper Form -->
+        <div class="flex-grow flex items-center justify-center px-6 sm:px-12 xl:px-20 py-20">
+            <div class="max-w-md w-full text-center">
+                
+                <!-- Logo Mobile (Hanya muncul di HP) -->
+                <div class="flex lg:hidden items-center justify-center gap-3 mb-10">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30">
+                        <i class="fas fa-house-chimney-user text-lg"></i>
+                    </div>
+                    <div class="flex flex-col text-left leading-none">
+                        <span class="font-bold text-lg text-slate-900 dark:text-white tracking-tight">Warga<span class="text-emerald-600 dark:text-emerald-400">Kita</span></span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-medium tracking-wider uppercase">Portal Komunitas</span>
+                    </div>
+                </div>
+
+                <!-- Teks Sambutan -->
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-3 tracking-tight">Selamat Datang!</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                        Silakan masuk menggunakan Email & Password, atau gunakan akun Google Anda.
+                    </p>
+                </div>
+
+                <!-- FORM LOGIN MANUAL -->
+                <%= form_with url: login_path, method: :post, local: true, class: "space-y-4 text-left" do |f| %>
+                    
+                    <div>
+                        <%= f.label :email, "Alamat Email", class: "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" %>
+                        <%= f.email_field :email, required: true, autofocus: true, placeholder: "nama@email.com", class: "w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" %>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <%= f.label :password, "Password", class: "block text-sm font-medium text-slate-700 dark:text-slate-300" %>
+                            <!-- Lupa password (opsional) -->
+                            <a href="#" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">Lupa password?</a>
+                        </div>
+                        <%= f.password_field :password, required: true, placeholder: "••••••••", class: "w-full px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" %>
+                    </div>
+
+                    <div class="pt-2">
+                        <%= f.submit "Masuk", class: "w-full cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/50 hover:-translate-y-0.5" %>
+                    </div>
+                <% end %>
+
+                <!-- Divider -->
+                <div class="mt-8 mb-6 flex items-center">
+                    <div class="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
+                    <span class="px-3 text-xs text-slate-400 dark:text-slate-500 font-medium uppercase tracking-wider">Atau</span>
+                    <div class="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
+                </div>
+
+                <!-- Tombol Login Google (Rails OAuth) -->
+                <div class="space-y-4">
+                    <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, form_class: "w-full flex justify-center", class: "w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border-2 border-slate-200 dark:border-slate-700 rounded-2xl py-3.5 px-4 text-sm font-semibold cursor-pointer transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/10" do %>
+                        <!-- SVG Logo Google -->
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        Lanjutkan dengan Google
+                    <% end %>
+                </div>
+
+                <!-- Info Tambahan / Bantuan & Link Daftar -->
+                <div class="mt-10 pt-6 border-t border-slate-100 dark:border-slate-800">
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                        Belum punya akun? 
+                        <%= link_to "Daftar sekarang", register_path, class: "font-semibold text-emerald-600 dark:text-emerald-400 hover:underline" %>
+                    </p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                        Mengalami kendala saat masuk?<br>
+                        Hubungi <a href="#" class="font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">Pengurus RT/RW</a> Anda.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer Kanan -->
+        <div class="py-6 text-center px-6 border-t border-slate-100 dark:border-slate-800/50 mt-auto">
+            <p class="text-[11px] text-slate-400 dark:text-slate-500">
+                &copy; <%= Date.current.year %> WargaKita · Perumahan [Nama Perumahan]
+            </p>
+        </div>
+
+    </div>
 </div>
+
+<!-- ================= SCRIPT TOGGLE TEMA ================= -->
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
+    const html = document.documentElement;
+
+    function updateIcon() {
+        if (html.classList.contains('dark')) {
+            themeToggleIcon.classList.remove('fa-moon');
+            themeToggleIcon.classList.add('fa-sun');
+        } else {
+            themeToggleIcon.classList.remove('fa-sun');
+            themeToggleIcon.classList.add('fa-moon');
+        }
+    }
+
+    if (themeToggleBtn && themeToggleIcon) {
+        updateIcon();
+        themeToggleBtn.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+            updateIcon();
+        });
+    }
+</script>

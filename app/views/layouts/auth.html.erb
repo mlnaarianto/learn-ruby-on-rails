@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="scroll-smooth">
   <head>
-    <title><%= content_for(:title) || "App" %></title>
+    <title><%= content_for(:title) || "WargaKita - Portal Warga" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="App">
+    <meta name="application-name" content="WargaKita">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -15,12 +15,23 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts & Icons (Tambahkan ini agar ikon muncul) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <%# HAPUS CDN TAILWIND (<script src="https://cdn.tailwindcss.com"></script>) %>
+
+    <!-- Tailwind CSS via Rails Asset Pipeline -->
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    
+    <!-- JavaScript Rails -->
+    <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <!-- Body class ditambahkan untuk mendukung Dark Mode & Font -->
+  <body class="font-sans antialiased text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
     <%= yield %>
   </body>
 </html>

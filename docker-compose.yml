@@ -3,17 +3,35 @@ services:
     build: .
     container_name: rails_web
     working_dir: /app
+    user: "1000:1000"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
       - "3000:3000"
     volumes:
       - .:/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     mem_limit: 768m
     cpus: 1.0
     environment:
+      HOME: /tmp
       DATABASE_URL: mysql2://root:root@db:3306/learn_ruby
+
+  tailwind:
+    build: .
+    container_name: rails_tailwind
+    working_dir: /app
+    user: "1000:1000"
+    command: bin/rails tailwindcss:watch
+    volumes:
+      - .:/app
+    environment:
+      HOME: /tmp
+    stdin_open: true
+    tty: true
+    mem_limit: 512m
+    cpus: 0.5
 
   db:
     image: mysql:8.0
@@ -27,6 +45,11 @@ services:
       - "3308:3306"
     volumes:
       - rails_dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     mem_limit: 1g
     cpus: 0.75
 

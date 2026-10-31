@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* TAMBAHKAN BARIS INI AGAR TOGGLE DARK MODE BEKERJA */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand: #cc0000;
+  --color-brand-light: #fde8e8;
+}

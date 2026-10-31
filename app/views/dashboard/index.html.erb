@@ -1,9 +1,22 @@
 <div class="text-center mt-12">
   <h1 class="text-3xl font-bold mb-2">Selamat Datang di Dashboard!</h1>
   <p class="text-gray-600 mb-6">Yay! Proses login dengan Google berhasil.</p>
-  
-  <!-- Nanti jika logika current_user sudah dibuat di controller -->
-  <!-- <h2 class="text-xl font-semibold mb-4">Halo, <%= @user_name %>!</h2> -->
+
+  <div class="flex flex-col items-center gap-3 mb-6">
+    <% if current_user&.avatar_url.present? %>
+      <%= image_tag current_user.avatar_url,
+            alt: current_user.name,
+            class: "w-24 h-24 rounded-full object-cover shadow-md",
+            referrerpolicy: "no-referrer" %>
+    <% else %>
+      <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold text-gray-600">
+        <%= current_user&.name&.first&.upcase %>
+      </div>
+    <% end %>
+
+    <h2 class="text-xl font-semibold">Halo, <%= current_user&.name %>!</h2>
+    <p class="text-gray-500 text-sm"><%= current_user&.email %></p>
+  </div>
 
   <div class="flex justify-center mt-4">
     <%= button_to "Logout", logout_path, method: :delete, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300" %>

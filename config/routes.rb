@@ -10,10 +10,13 @@ Rails.application.routes.draw do
   get "/dashboard", to: "dashboard#index"
 
   # 3. RUTE AUTENTIKASI & SESI
-  get "/login", to: "auth#login"
-  delete "/logout", to: "auth#destroy"
+  get    "/login",    to: "auth#login",       as: :login
+  post   "/login",    to: "auth#authenticate"
+  get    "/register", to: "auth#register",    as: :register
+  post   "/register", to: "auth#create"
+  delete "/logout",   to: "auth#destroy",     as: :logout
 
   # 4. RUTE OMNIAUTH (GOOGLE CALLBACK)
   get "/auth/:provider/callback", to: "auth#omniauth"
-  get "/auth/failure", to: "auth#failure"
+  get "/auth/failure",            to: "auth#failure"
 end

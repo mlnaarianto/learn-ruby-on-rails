@@ -1,165 +1,257 @@
-<div class="hero">
-  <div class="hero-content">
-    <span class="badge">🎓 Belajar Ruby on Rails</span>
-    <h1>Selamat Datang di <span class="highlight">RubyLearn</span></h1>
-    <p class="subtitle">
-      Platform belajar Ruby on Rails yang simpel, cepat, dan menyenangkan.
-      Mulai perjalananmu jadi Rails developer hari ini.
-    </p>
+<%# --- SCRIPT ANTI-FLICKER DARK MODE --- %>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
 
-    <div class="cta-buttons">
-      <% if session[:user_id] %>
-        <%= link_to "Ke Dashboard →", dashboard_path, class: "btn btn-primary" %>
-      <% else %>
-        <%= link_to "Masuk / Login", login_path, class: "btn btn-primary" %>
-        <%= link_to "Pelajari Lebih Lanjut", "#features", class: "btn btn-secondary" %>
-      <% end %>
-    </div>
-  </div>
+<div class="font-sans antialiased text-slate-800 dark:text-slate-200 min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-300 relative overflow-hidden">
+    
+    <!-- Ornamen Background Lembut (Blob) -->
+    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-emerald-100/50 to-teal-50/50 dark:from-emerald-900/20 dark:to-slate-900/0 -z-10 rounded-b-[100px] transition-colors duration-300"></div>
+    <div class="absolute -top-32 -right-32 w-96 h-96 bg-emerald-200/40 dark:bg-emerald-800/10 rounded-full blur-3xl -z-10"></div>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="sticky top-0 z-50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo -->
+                <%= link_to root_path, class: "flex items-center gap-3 group" do %>
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30 group-hover:scale-105 transition-transform duration-300">
+                        <i class="fas fa-house-chimney-user text-lg"></i>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="font-bold text-lg text-slate-900 dark:text-white tracking-tight transition-colors duration-300">
+                            Warga<span class="text-emerald-600 dark:text-emerald-400">Kita</span>
+                        </span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-medium tracking-wider uppercase">
+                            Portal Komunitas
+                        </span>
+                    </div>
+                <% end %>
+
+                <!-- Kanan Navbar -->
+                <div class="flex items-center gap-4">
+                    <!-- Tombol Tema -->
+                    <button id="theme-toggle" type="button" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all duration-300" title="Ganti Tema">
+                        <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
+                    </button>
+
+                    <!-- Tombol Auth -->
+                    <% if session[:user_id] %>
+                        <%= link_to dashboard_path, class: "hidden sm:inline-flex items-center gap-2 bg-emerald-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-emerald-700 transition-all duration-300 shadow-md shadow-emerald-600/20" do %>
+                            Dashboard <i class="fas fa-arrow-right text-xs"></i>
+                        <% end %>
+                    <% else %>
+                        <%= link_to login_path, class: "hidden sm:inline-flex items-center gap-2 bg-emerald-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-emerald-700 transition-all duration-300 shadow-md shadow-emerald-600/20" do %>
+                            Masuk Warga <i class="fas fa-sign-in-alt text-xs"></i>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                
+                <!-- KIRI (Teks) -->
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-xs text-emerald-800 dark:text-emerald-300 font-semibold tracking-wide border border-emerald-200 dark:border-emerald-800">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Perumahan [Nama Perumahan] · RT [XX] / RW [YY]
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white">
+                        Satu Portal Hangat<br>
+                        Untuk Seluruh<br>
+                        <span class="text-emerald-600 dark:text-emerald-400">Warga Perumahan</span>
+                    </h1>
+
+                    <p class="text-lg text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">
+                        Wadah informasi, gotong royong, dan komunikasi terpadu warga Perumahan [Nama Perumahan], Kel. [Nama Kelurahan], Kec. [Nama Kecamatan].
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <% if session[:user_id] %>
+                            <%= link_to dashboard_path, class: "inline-flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold px-8 py-3.5 rounded-2xl hover:bg-emerald-700 hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-emerald-600/30 text-sm" do %>
+                                <i class="fas fa-gauge-high"></i> Masuk Dashboard
+                            <% end %>
+                        <% else %>
+                            <%= link_to login_path, class: "inline-flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold px-8 py-3.5 rounded-2xl hover:bg-emerald-700 hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-emerald-600/30 text-sm" do %>
+                                <i class="fas fa-sign-in-alt"></i> Login Warga
+                            <% end %>
+                        <% end %>
+
+                        <a href="#fitur" class="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold px-8 py-3.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-700 hover:-translate-y-0.5 transition-all duration-300 shadow-sm text-sm">
+                            Lihat Layanan
+                        </a>
+                    </div>
+
+                    <!-- Mini Stats -->
+                    <div class="flex items-center gap-8 pt-6 border-t border-slate-200 dark:border-slate-800 max-w-md">
+                        <div>
+                            <div class="text-2xl font-bold text-slate-900 dark:text-white">50+</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Kepala Keluarga</div>
+                        </div>
+                        <div class="w-px h-10 bg-slate-200 dark:bg-slate-800"></div>
+                        <div>
+                            <div class="text-2xl font-bold text-slate-900 dark:text-white">24/7</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Keamanan Ronda</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KANAN (Visual Ramah / Mockup Card) -->
+                <div class="relative flex justify-center lg:justify-end">
+                    <!-- Bingkai Foto/Card Utama -->
+                    <div class="relative w-full max-w-md bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                        
+                        <!-- Hiasan Pojok -->
+                        <div class="absolute -top-6 -right-6 w-24 h-24 bg-amber-400 rounded-full blur-2xl opacity-20 dark:opacity-10"></div>
+                        <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-emerald-400 rounded-full blur-3xl opacity-20 dark:opacity-10"></div>
+
+                        <!-- Konten Card -->
+                        <div class="space-y-6">
+                            <!-- Header Card -->
+                            <div class="flex items-center gap-4 border-b border-slate-100 dark:border-slate-700 pb-4">
+                                <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                                    <i class="fas fa-users text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white">Pengumuman Terbaru</h3>
+                                    <p class="text-xs text-slate-500">Oleh: Pengurus RT 05</p>
+                                </div>
+                            </div>
+                            
+                            <!-- List Pengumuman -->
+                            <div class="space-y-4">
+                                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700">
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-broom text-emerald-500 mt-1"></i>
+                                        <div>
+                                            <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-200">Kerja Bakti Minggu Ini</h4>
+                                            <p class="text-xs text-slate-500 mt-1">Mari bergotong royong membersihkan saluran air pada hari Minggu pukul 07.00 WIB.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700">
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-bullhorn text-amber-500 mt-1"></i>
+                                        <div>
+                                            <h4 class="font-semibold text-sm text-slate-800 dark:text-slate-200">Iuran Keamanan Bulan Ini</h4>
+                                            <p class="text-xs text-slate-500 mt-1">Pembayaran iuran dapat dilakukan ke Bendahara RW paling lambat tanggal 10.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= FITUR ================= -->
+    <section id="fitur" class="bg-white dark:bg-slate-900 py-24 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
+                    Layanan Untuk Kenyamanan Bersama
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">
+                    Dirancang agar komunikasi antar warga dan pengurus berjalan lebih transparan dan mudah.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Fitur 1 -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-8 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border border-slate-100 dark:border-slate-800 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6">
+                        <i class="fas fa-bullhorn text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Pengumuman & Agenda</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Dapatkan info terbaru seputar kegiatan RT/RW, jadwal gotong royong, dan hasil rapat warga langsung dari pengurus.
+                    </p>
+                </div>
+
+                <!-- Fitur 2 -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-8 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border border-slate-100 dark:border-slate-800 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6">
+                        <i class="fas fa-clipboard-list text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Lapor Fasilitas</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Laporkan masalah lingkungan (lampu mati, jalan rusak, sampah). Pantau status penanganan secara transparan.
+                    </p>
+                </div>
+
+                <!-- Fitur 3 -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-8 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border border-slate-100 dark:border-slate-800 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6">
+                        <i class="fas fa-shield-halved text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Jadwal Ronda</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Cek jadwal ronda malam Anda, lihat kontak darurat pos keamanan, dan pastikan lingkungan perumahan selalu aman.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="py-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-house-chimney-user text-emerald-600 dark:text-emerald-400"></i>
+                <span class="text-sm font-bold text-slate-800 dark:text-slate-200">
+                    Portal Warga [Nama Perumahan]
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 text-center md:text-left">
+                &copy; <%= Date.current.year %> · RT [XX] / RW [YY], Kel. [Nama Kelurahan], Kec. [Nama Kecamatan]
+            </p>
+        </div>
+    </footer>
+
 </div>
 
-<div class="features" id="features">
-  <div class="feature-card">
-    <div class="feature-icon">🚀</div>
-    <h3>Cepat</h3>
-    <p>Materi dikemas ringkas biar kamu langsung praktik, bukan cuma teori.</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon">🧩</div>
-    <h3>Terstruktur</h3>
-    <p>Belajar step-by-step dari dasar sampai bisa bikin project sendiri.</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon">🤝</div>
-    <h3>Gratis</h3>
-    <p>Semua materi bisa diakses tanpa biaya, cukup login pakai akun Google.</p>
-  </div>
-</div>
+<!-- ================= SCRIPT TOGGLE TEMA ================= -->
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
+    const html = document.documentElement;
 
-<footer class="site-footer">
-  <p>&copy; <%= Date.current.year %> RubyLearn. Dibuat dengan ❤️ untuk belajar Rails.</p>
-</footer>
+    function updateIcon() {
+        if (html.classList.contains('dark')) {
+            themeToggleIcon.classList.remove('fa-moon');
+            themeToggleIcon.classList.add('fa-sun');
+        } else {
+            themeToggleIcon.classList.remove('fa-sun');
+            themeToggleIcon.classList.add('fa-moon');
+        }
+    }
 
-<style>
-  .hero {
-    width: 100%;
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: linear-gradient(135deg, #fdf2f2 0%, #f5f7fa 100%);
-    padding: 2rem 1.5rem;
-  }
+    updateIcon();
 
-  .hero-content {
-    max-width: 640px;
-  }
-
-  .badge {
-    display: inline-block;
-    background: #fde8e8;
-    color: #cc0000;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero-content h1 {
-    font-size: 2.75rem;
-    margin: 0 0 1rem;
-    color: #1a1a1a;
-    line-height: 1.2;
-  }
-
-  .highlight {
-    color: #cc0000;
-  }
-
-  .subtitle {
-    font-size: 1.15rem;
-    color: #555;
-    margin-bottom: 2.25rem;
-    line-height: 1.6;
-  }
-
-  .cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.85rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .btn-primary {
-    background-color: #cc0000;
-    color: #fff;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(204, 0, 0, 0.25);
-  }
-
-  .btn-secondary {
-    background-color: transparent;
-    color: #cc0000;
-    border: 2px solid #cc0000;
-  }
-
-  .btn-secondary:hover {
-    background-color: #fde8e8;
-  }
-
-  .features {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2rem;
-  }
-
-  .feature-card {
-    text-align: center;
-    padding: 1.5rem;
-  }
-
-  .feature-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .feature-card h3 {
-    font-size: 1.2rem;
-    margin: 0 0 0.5rem;
-    color: #1a1a1a;
-  }
-
-  .feature-card p {
-    color: #666;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  .site-footer {
-    width: 100%;
-    text-align: center;
-    padding: 2rem 1.5rem;
-    border-top: 1px solid #eee;
-    color: #999;
-    font-size: 0.85rem;
-  }
-</style>
+    themeToggleBtn.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        if (html.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+        updateIcon();
+    });
+</script>
