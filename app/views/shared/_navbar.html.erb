@@ -1,0 +1,38 @@
+<%# app/views/shared/_sidebar.html.erb %>
+<%# overlay untuk mobile %>
+<div data-sidebar-target="overlay" data-action="click->sidebar#close"
+     class="hidden fixed inset-0 z-30 bg-black/40 lg:hidden"></div>
+
+<aside data-sidebar-target="panel"
+       class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full lg:translate-x-0
+              transition-transform duration-200 flex flex-col
+              bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
+
+  <div class="h-14 px-5 flex items-center border-b border-slate-200 dark:border-slate-800">
+    <%= link_to dashboard_path, class: "text-lg font-bold text-slate-900 dark:text-white" do %>
+      <i class="fa-solid fa-house-user mr-1 text-emerald-600"></i> WargaKita
+    <% end %>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto p-3 space-y-1">
+    <%= sidebar_link "Dashboard", dashboard_path,
+          icon: "fa-gauge", active: current_page?(dashboard_path) %>
+
+    <% if policy(User).index? || policy(Role).index? %>
+      <p class="px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        Manajemen Akses
+      </p>
+
+      <% if policy(User).index? %>
+        <%= sidebar_link "Users", users_path,
+              icon: "fa-users", active: controller_name == "users" %>
+      <% end %>
+
+      <% if policy(Role).index? %>
+        <%= sidebar_link "Roles & Permission", roles_path,
+              icon: "fa-user-shield",
+              active: %w[roles role_permissions].include?(controller_name) %>
+      <% end %>
+    <% end %>
+  </nav>
+</aside>

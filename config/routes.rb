@@ -19,4 +19,11 @@ Rails.application.routes.draw do
   # 4. RUTE OMNIAUTH (GOOGLE CALLBACK)
   get "/auth/:provider/callback", to: "auth#omniauth"
   get "/auth/failure",            to: "auth#failure"
+
+  # 5. RUTE RBAC (akses ditentukan permission lewat Pundit, bukan namespace)
+  resources :users, except: :show
+  resources :roles, except: :show do
+    # singular resource: /roles/:role_id/permissions
+    resource :permissions, only: %i[edit update], controller: "role_permissions"
+  end
 end

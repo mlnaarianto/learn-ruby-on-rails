@@ -1,3 +1,4 @@
+<%# app/views/layouts/application.html.erb %>
 <!DOCTYPE html>
 <html class="scroll-smooth" lang="id">
   <head>
@@ -29,29 +30,32 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="font-sans antialiased min-h-screen flex flex-col
+  <body class="font-sans antialiased min-h-screen
                text-slate-800 dark:text-slate-200
                bg-slate-50 dark:bg-slate-950
                transition-colors duration-300">
 
-    <%# Flash messages (opsional, tapi umum dipakai) %>
-    <% if notice.present? || alert.present? %>
-      <div class="container mx-auto mt-4 px-5">
-        <% if notice.present? %>
-          <div class="rounded-lg bg-emerald-100 text-emerald-800 px-4 py-3 mb-2">
-            <%= notice %>
-          </div>
-        <% end %>
-        <% if alert.present? %>
-          <div class="rounded-lg bg-rose-100 text-rose-800 px-4 py-3 mb-2">
-            <%= alert %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+    <% if user_signed_in? %>
+      <%# ===== SETELAH LOGIN: sidebar + navbar ===== %>
+      <div data-controller="sidebar" class="min-h-screen">
+        <%= render "shared/sidebar" %>
 
-    <main class="flex-1">
-      <%= yield %>
-    </main>
+        <div class="lg:ml-64 min-h-screen flex flex-col">
+          <%= render "shared/navbar" %>
+          <%= render "shared/flash" %>
+
+          <main class="flex-1 p-5">
+            <%= yield %>
+          </main>
+        </div>
+      </div>
+    <% else %>
+      <%# ===== TAMU: tanpa sidebar/navbar ===== %>
+      <%= render "shared/flash" %>
+
+      <main class="flex-1">
+        <%= yield %>
+      </main>
+    <% end %>
   </body>
 </html>
