@@ -1,20 +1,10 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
 # db/seeds.rb
 
 # ============ PERMISSIONS (sumber kebenaran ada di kode) ============
 resources = {
   "users"       => %w[index create update destroy],
   "posts"       => %w[index create update destroy],
-  "roles"       => %w[index create update destroy],
+  "roles"       => %w[index create update destroy manage_permissions],   # BARU: manage_permissions
   "permissions" => %w[index]
 }
 
@@ -33,10 +23,12 @@ admin_role       = Role.find_or_create_by!(name: "admin")       { |r| r.descript
 member_role      = Role.find_or_create_by!(name: "member")      { |r| r.description = "User standar" }
 
 # ============ ROLE PERMISSIONS ============
+# Admin mendapat semua permission (termasuk roles.manage_permissions)
 Permission.find_each do |perm|
   RolePermission.find_or_create_by!(role: admin_role, permission: perm)
 end
 
+# Member hanya boleh lihat dan buat post
 %w[posts.index posts.create].each do |name|
   perm = Permission.find_by!(name: name)
   RolePermission.find_or_create_by!(role: member_role, permission: perm)
@@ -45,7 +37,7 @@ end
 puts "✅ Role: #{Role.pluck(:name).join(', ')}"
 puts "✅ Admin: #{admin_role.permissions.count} permission | Member: #{member_role.permissions.count} permission"
 
-# ============ SUPER ADMIN ============                                   # STEP 4
+# ============ SUPER ADMIN ============
 super_admin_email = ENV.fetch("SUPER_ADMIN_EMAIL", "superadmin@example.com")
 
 super_admin_password = ENV.fetch("SUPER_ADMIN_PASSWORD") do
