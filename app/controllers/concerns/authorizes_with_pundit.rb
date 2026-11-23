@@ -5,8 +5,7 @@ module AuthorizesWithPundit
   included do
     before_action :authenticate_user!
 
-    # Pengaman: error jika ada action yang lupa authorize / policy_scope
     after_action :verify_authorized
-    after_action :verify_policy_scoped, only: :index
+    after_action :verify_policy_scoped, if: -> { action_name == "index" }
   end
 end
