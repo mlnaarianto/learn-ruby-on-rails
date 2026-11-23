@@ -42,7 +42,7 @@ super_admin_email = ENV.fetch("SUPER_ADMIN_EMAIL", "superadmin@example.com")
 
 super_admin_password = ENV.fetch("SUPER_ADMIN_PASSWORD") do
   raise "SUPER_ADMIN_PASSWORD wajib diisi di production" if Rails.env.production?
-  "password123"   # hanya untuk development/test
+  "password"   # hanya untuk development/test
 end
 
 super_admin = User.find_or_initialize_by(email: super_admin_email)
