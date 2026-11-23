@@ -1,0 +1,7 @@
+<%# app/views/users/edit.html.erb %>
+<div class="mb-5">
+  <%= link_to "← Kembali ke Users", users_path, class: "text-sm text-slate-500 hover:underline" %>
+  <h1 class="text-xl font-bold mt-2">Edit User: <%= @user.name %></h1>
+</div>
+
+<%= render "form", user: @user %>

@@ -1,0 +1,68 @@
+<%# app/views/users/_form.html.erb %>
+<%= form_with model: user, class: "space-y-4 max-w-xl" do |f| %>
+  <% if user.errors.any? %>
+    <div class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <ul class="list-disc pl-5">
+        <% user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "Nama", class: "block text-sm font-medium mb-1" %>
+    <%= f.text_field :name, class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :email, "Email", class: "block text-sm font-medium mb-1" %>
+    <%= f.email_field :email, class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :age, "Umur", class: "block text-sm font-medium mb-1" %>
+    <%= f.number_field :age, class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :password, "Password", class: "block text-sm font-medium mb-1" %>
+    <%= f.password_field :password, autocomplete: "new-password",
+          class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+    <% if user.persisted? %>
+      <p class="mt-1 text-xs text-slate-500">Kosongkan jika tidak ingin mengubah password.</p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation, "Konfirmasi Password", class: "block text-sm font-medium mb-1" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password",
+          class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+  </div>
+
+  <%# Role: hanya untuk yang berhak, dan bukan akun sendiri %>
+  <% if policy(user).assign_roles? && user != current_user %>
+    <fieldset>
+      <legend class="block text-sm font-medium mb-2">Role</legend>
+      <%# supaya parameter tetap terkirim walau semua checkbox dikosongkan %>
+      <%= hidden_field_tag "user[role_ids][]", "" %>
+
+      <div class="space-y-2">
+        <% @roles.each do |role| %>
+          <% checked = user.new_record? ? role.name == "member" : user.role_ids.include?(role.id) %>
+          <label for="role_<%= role.id %>" class="flex items-center gap-3 text-sm">
+            <%= check_box_tag "user[role_ids][]", role.id, checked, id: "role_#{role.id}",
+                  class: "h-4 w-4 rounded border-slate-300 text-emerald-600" %>
+            <span><%= role.name %></span>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+  <% end %>
+
+  <div class="flex gap-3 pt-2">
+    <%= f.submit class: "px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer" %>
+    <%= link_to "Batal", users_path,
+          class: "px-4 py-2 rounded-lg text-sm font-medium border border-slate-300 dark:border-slate-700" %>
+  </div>
+<% end %>
