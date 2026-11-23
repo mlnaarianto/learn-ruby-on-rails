@@ -1,0 +1,43 @@
+<%# app/views/role_permissions/edit.html.erb %>
+<div class="mb-5">
+  <%= link_to "← Kembali ke Roles", roles_path, class: "text-sm text-slate-500 hover:underline" %>
+  <h1 class="text-xl font-bold mt-2">Permission untuk role: <%= @role.name %></h1>
+  <p class="text-sm text-slate-500">Centang aksi yang boleh dilakukan role ini.</p>
+</div>
+
+<%= form_with url: role_permissions_path(@role), method: :patch do %>
+  <%# supaya kalau semua dicabut, parameter tetap terkirim %>
+  <%= hidden_field_tag "role[permission_ids][]", "" %>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <% @permissions_by_group.each do |group, permissions| %>
+      <div class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
+          <%= group %>
+        </h2>
+
+        <div class="space-y-2">
+          <% permissions.each do |permission| %>
+            <% allowed = @grantable_ids.include?(permission.id) %>
+            <label for="perm_<%= permission.id %>"
+                   class="flex items-center gap-3 text-sm <%= 'opacity-50' unless allowed %>">
+              <%= check_box_tag "role[permission_ids][]", permission.id,
+                    @selected_ids.include?(permission.id),
+                    id: "perm_#{permission.id}",
+                    disabled: !allowed,
+                    class: "h-4 w-4 rounded border-slate-300 text-emerald-600" %>
+              <span><%= permission.name %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-5 flex gap-3">
+    <%= submit_tag "Simpan Permission",
+          class: "px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer" %>
+    <%= link_to "Batal", roles_path,
+          class: "px-4 py-2 rounded-lg text-sm font-medium border border-slate-300 dark:border-slate-700" %>
+  </div>
+<% end %>
