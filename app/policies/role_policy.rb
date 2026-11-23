@@ -7,9 +7,6 @@ class RolePolicy < ApplicationPolicy
   def update?  = super && !super_admin_role?
   def destroy? = super && !UNDELETABLE.include?(role_name)
 
-  # Mengatur permission milik role (checkbox di form role) = izin update role
-  def manage_permissions? = update?
-
   class Scope < ApplicationPolicy::Scope
     def resolve
       relation = super
