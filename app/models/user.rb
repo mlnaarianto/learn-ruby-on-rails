@@ -10,6 +10,8 @@ class User < ApplicationRecord
                    after_add:    :reset_rbac_cache,     # STEP 3
                    after_remove: :reset_rbac_cache      # STEP 3
 
+  has_many :permissions, -> { distinct }, through: :roles
+
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :name,  presence: true
   validates :password, length: { minimum: 8 }, if: -> { password.present? }
