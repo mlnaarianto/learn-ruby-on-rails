@@ -1,0 +1,8 @@
+<%# app/views/roles/new.html.erb %>
+<div class="mb-5">
+  <%= link_to "← Kembali ke Roles", roles_path, class: "text-sm text-slate-500 hover:underline" %>
+  <h1 class="text-xl font-bold mt-2">Tambah Role</h1>
+  <p class="text-sm text-slate-500">Setelah disimpan, kamu langsung diarahkan untuk mengatur permission-nya.</p>
+</div>
+
+<%= render "form", role: @role %>

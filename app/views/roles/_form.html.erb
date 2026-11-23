@@ -1,0 +1,38 @@
+<%# app/views/roles/_form.html.erb %>
+<%= form_with model: role, class: "space-y-4 max-w-xl" do |f| %>
+  <% if role.errors.any? %>
+    <div class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <ul class="list-disc pl-5">
+        <% role.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "Nama role", class: "block text-sm font-medium mb-1" %>
+    <% if role.persisted? %>
+      <%# nama dikunci setelah dibuat, jadi tidak dikirim ke server %>
+      <%= text_field_tag :role_name_display, role.name, disabled: true,
+            class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-3 py-2 text-sm" %>
+      <p class="mt-1 text-xs text-slate-500">Nama tidak bisa diubah karena dirujuk oleh kode.</p>
+    <% else %>
+      <%= f.text_field :name, placeholder: "contoh: content_editor",
+            class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+      <p class="mt-1 text-xs text-slate-500">Otomatis diubah ke huruf kecil dan underscore.</p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Deskripsi", class: "block text-sm font-medium mb-1" %>
+    <%= f.text_area :description, rows: 3,
+          class: "w-full rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 px-3 py-2 text-sm" %>
+  </div>
+
+  <div class="flex gap-3 pt-2">
+    <%= f.submit class: "px-4 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer" %>
+    <%= link_to "Batal", roles_path,
+          class: "px-4 py-2 rounded-lg text-sm font-medium border border-slate-300 dark:border-slate-700" %>
+  </div>
+<% end %>

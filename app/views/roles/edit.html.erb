@@ -1,0 +1,7 @@
+<%# app/views/roles/edit.html.erb %>
+<div class="mb-5">
+  <%= link_to "← Kembali ke Roles", roles_path, class: "text-sm text-slate-500 hover:underline" %>
+  <h1 class="text-xl font-bold mt-2">Edit Role: <%= @role.name %></h1>
+</div>
+
+<%= render "form", role: @role %>
